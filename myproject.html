@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Display</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #000000;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        body{
+            background-color: aqua;
+        }
+    </style>
+</head>
+<body>
+    <h2>Data Display</h2>
+    <h1>created by BRO:)</h1>
+    
+    <table id="data-table">
+        <tr>
+
+            <th>distance</th>
+            <th>Humidity</th>
+            <th>TS</th>
+            <th>Temperature</th>
+            <th>TimeStamp</th>
+            
+            
+            
+        </tr>
+    </table>
+    <script>
+        // Fetch data from your API endpoint
+        fetch('http://localhost:8000/data') // Update the URL if your API is hosted elsewhere
+            .then(response => response.json())
+            .then(data => {
+                console.log('Fetched Data:', data);
+                const dataTable = document.getElementById('data-table');
+                data.forEach(item => {
+                    const row = dataTable.insertRow();
+
+                    const distanceCell = row.insertCell(0);
+                    const humidityCell = row.insertCell(1);
+                    const tsCell = row.insertCell(2);
+                    const temperatureCell = row.insertCell(3);
+                    const timeStampCell = row.insertCell(4);
+    
+                    distanceCell.textContent = item.Distance;
+                    humidityCell.textContent = item.Humidity;
+                    tsCell.textContent = item.TS; // Corrected key to TS
+                    temperatureCell.textContent = item.Temperature;
+                    timeStampCell.textContent = item.TimeStamp; // Corrected key to TimeStamp
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                const dataTable = document.getElementById('data-table');
+                const errorMessageRow = dataTable.insertRow();
+                const errorMessageCell = errorMessageRow.insertCell();
+                errorMessageCell.colspan = 4; // Corrected colspan to 4
+                errorMessageCell.textContent = 'Error fetching data from server';
+            });
+    </script>
+    
+</body>
+</html>
